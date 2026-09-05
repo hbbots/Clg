@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TransGlobe Academy | Student Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070410;
+      --glass-bg: rgba(18, 11, 34, 0.75);
+      --glass-border: rgba(168, 85, 247, 0.22);
+      --neon-purple: #a855f7;
+      --neon-pink: #ec4899;
+      --neon-glow: rgba(168, 85, 247, 0.45);
+      --text-main: #faf5ff;
+      --text-muted: #c084fc;
+      --text-dim: #94a3b8;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .font-mono {
+      font-family: 'Space Grotesk', monospace;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .ambient-glow-1 {
+      position: fixed;
+      top: -150px;
+      left: -100px;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, transparent 65%);
+      filter: blur(90px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .ambient-glow-2 {
+      position: fixed;
+      bottom: -150px;
+      right: -100px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      background: rgba(7, 4, 16, 0.85);
+      backdrop-filter: blur(16px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 20px var(--neon-glow);
+    }
+
+    .brand-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+
+    .brand-meta {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-sub {
+      font-size: 0.7rem;
+      color: var(--neon-pink);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    main {
+      flex: 1;
+      padding: 2.5rem 1.5rem;
+      position: relative;
+      z-index: 1;
+      max-width: 1240px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    #auth-view {
+      max-width: 480px;
+      margin: 3rem auto;
+      padding: 2.75rem 2.25rem;
+      text-align: center;
+    }
+
+    .auth-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(135deg, #fff 40%, #e9d5ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .auth-subtitle {
+      color: var(--text-dim);
+      font-size: 0.88rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    input {
+      width: 100%;
+      background: rgba(14, 8, 28, 0.75);
+      border: 1px solid var(--glass-border);
+      padding: 0.9rem 1.1rem;
+      border-radius: 12px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.25s;
+    }
+
+    input:focus {
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 16px rgba(236, 72, 153, 0.35);
+    }
+
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+      border: none;
+      padding: 0.95rem 1.2rem;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.25s;
+      box-shadow: 0 8px 25px -4px var(--neon-glow);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -4px rgba(236, 72, 153, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(236, 72, 153, 0.2);
+      border-color: var(--neon-pink);
+    }
+
+    .demo-credentials {
+      margin-top: 1.75rem;
+      padding: 1.1rem;
+      background: rgba(168, 85, 247, 0.05);
+      border-radius: 14px;
+      border: 1px dashed var(--glass-border);
+      font-size: 0.8rem;
+      text-align: left;
+      color: var(--text-dim);
+    }
+
+    .demo-chip {
+      background: rgba(168, 85, 247, 0.18);
+      color: #f3e8ff;
+      padding: 0.55rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin-top: 0.55rem;
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      font-size: 0.82rem;
+      transition: all 0.2s;
+    }
+
+    .demo-chip:hover {
+      background: rgba(236, 72, 153, 0.25);
+      border-color: var(--neon-pink);
+    }
+
+    .alert {
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-bottom: 1.25rem;
+      display: none;
+    }
+
+    .alert-danger {
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      color: #fda4af;
+    }
+
+    #dashboard-view {
+      display: none;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    @media (max-width: 980px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .profile-card {
+      padding: 2.2rem 2rem;
+      text-align: center;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 1.25rem;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 26px;
+      object-fit: cover;
+      border: 2px solid rgba(236, 72, 153, 0.5);
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 99px;
+      margin-bottom: 0.6rem;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--success);
+    }
+
+    .profile-name {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin-bottom: 0.2rem;
+    }
+
+    .profile-role {
+      color: var(--neon-pink);
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 1.35rem;
+      word-break: break-all;
+    }
+
+    .meta-list {
+      list-style: none;
+      text-align: left;
+      border-top: 1px solid var(--glass-border);
+      padding-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .meta-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+
+    .meta-label {
+      color: var(--text-dim);
+    }
+
+    .meta-value {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .dashboard-panel {
+      padding: 2.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--glass-border);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .panel-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .info-box {
+      background: rgba(168, 85, 247, 0.04);
+      border: 1px solid var(--glass-border);
+      padding: 1.15rem;
+      border-radius: 14px;
+    }
+
+    .info-box-label {
+      font-size: 0.72rem;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+      font-weight: 700;
+    }
+
+    .info-box-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .id-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      gap: 4px;
+    }
+
+    .id-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .id-tab-btn.active {
+      background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(236, 72, 153, 0.35);
+    }
+
+    .id-card-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      background: rgba(11, 7, 20, 0.5);
+      border-radius: 18px;
+      border: 1px dashed var(--glass-border);
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .card-view {
+      display: none;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .card-view.active {
+      display: flex;
+    }
+
+    /* EXPANDED SCREEN CARD SIZES */
+    .id-card-landscape {
+      width: 100%;
+      max-width: 580px;
+      min-height: 345px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #180d2e 0%, #0c051a 100%);
+      border: 1.5px solid rgba(236, 72, 153, 0.45);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.6rem 1.8rem;
+      box-sizing: border-box;
+    }
+
+    .id-card-landscape .id-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+      padding-bottom: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .id-card-landscape .id-body {
+      display: flex;
+      gap: 1.4rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .id-card-landscape .id-photo {
+      width: 110px;
+      height: 132px;
+      min-width: 110px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 2px solid rgba(236, 72, 153, 0.55);
+    }
+
+    .id-card-landscape .id-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .id-card-landscape .id-grid-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem 1.1rem;
+      font-size: 0.82rem;
+    }
+
+    .id-card-landscape .id-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid rgba(168, 85, 247, 0.25);
+      padding-top: 0.85rem;
+    }
+
+    .id-card-portrait {
+      width: 100%;
+      max-width: 380px;
+      min-height: 520px;
+      background: linear-gradient(165deg, #190e2e 0%, #0c0617 100%);
+      border: 1.5px solid rgba(236, 72, 153, 0.45);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      padding: 1.75rem 1.5rem;
+      box-sizing: border-box;
+      justify-content: space-between;
+    }
+
+    .lanyard-slot {
+      width: 56px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 99px;
+      margin: 0 auto 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .id-card-portrait .badge-photo-wrap {
+      width: 120px;
+      height: 138px;
+      margin: 0 auto 1rem;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid var(--neon-pink);
+    }
+
+    .id-card-portrait .badge-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .id-card-portrait .badge-name {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+      color: #fff;
+    }
+
+    .id-card-portrait .badge-program {
+      font-size: 0.82rem;
+      color: #e9d5ff;
+      margin-bottom: 1.1rem;
+      line-height: 1.35;
+      padding: 0 0.5rem;
+    }
+
+    .id-card-portrait .badge-table {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.85rem;
+      margin-bottom: 1.1rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      text-align: left;
+      font-size: 0.8rem;
+    }
+
+    .id-card-portrait .badge-field span {
+      display: block;
+      color: var(--text-dim);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+    }
+
+    .id-card-portrait .badge-field strong {
+      color: #fff;
+      font-weight: 700;
+      word-break: break-all;
+    }
+
+    .id-brand {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #f472b6, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .id-campus {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .id-name {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .id-course {
+      font-size: 0.82rem;
+      color: #e9d5ff;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+    }
+
+    .id-field span {
+      display: block;
+      color: var(--text-dim);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+    }
+
+    .id-field strong {
+      color: var(--text-main);
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .barcode-placeholder {
+      height: 26px;
+      width: 155px;
+      background: repeating-linear-gradient(90deg, #e9d5ff, #e9d5ff 2px, transparent 2px, transparent 4px, #e9d5ff 4px, #e9d5ff 6px, transparent 6px, transparent 7px);
+      opacity: 0.85;
+    }
+
+    .id-validity {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-align: right;
+      line-height: 1.3;
+    }
+
+    /* ENLARGED PRINT & PDF SPECIFICATIONS */
+    @page {
+      margin: 0;
+      size: auto;
+    }
+
+    @media print {
+      html, body {
+        width: 100% !important;
+        height: 100% !important;
+        background: #070410 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body * {
+        visibility: hidden !important;
+      }
+
+      .ambient-glow-1, .ambient-glow-2, header, .btn, .panel-header, .info-grid, .profile-card, .id-tabs {
+        display: none !important;
+      }
+
+      .id-card-stage {
+        visibility: visible !important;
+        border: none !important;
+        background: transparent !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+      }
+
+      .card-view.active,
+      .card-view.active * {
+        visibility: visible !important;
+      }
+
+      .card-view.active {
+        display: block !important;
+        width: auto !important;
+        height: auto !important;
+        margin: auto !important;
+        padding: 0 !important;
+      }
+
+      /* Enlarged Landscape: Standard event/conference size (100mm x 64mm) */
+      .id-card-landscape {
+        width: 100mm !important;
+        min-height: 64mm !important;
+        height: auto !important;
+        border: 1.5px solid #a855f7 !important;
+        background: #140b24 !important;
+        box-shadow: none !important;
+        border-radius: 5mm !important;
+        padding: 5mm 6mm !important;
+        page-break-inside: avoid !important;
+      }
+
+      .id-card-landscape .id-photo {
+        width: 22mm !important;
+        height: 27mm !important;
+        min-width: 22mm !important;
+      }
+
+      .id-card-landscape .id-name {
+        font-size: 13pt !important;
+      }
+
+      .id-card-landscape .id-course {
+        font-size: 7.5pt !important;
+      }
+
+      .id-card-landscape .id-grid-details {
+        font-size: 7.5pt !important;
+      }
+
+      /* Enlarged Portrait: Standard hanging credential size (68mm x 104mm) */
+      .id-card-portrait {
+        width: 68mm !important;
+        min-height: 104mm !important;
+        height: auto !important;
+        border: 1.5px solid #a855f7 !important;
+        background: #140b24 !important;
+        box-shadow: none !important;
+        border-radius: 5mm !important;
+        padding: 5mm 5mm !important;
+        page-break-inside: avoid !important;
+      }
+
+      .id-card-portrait .badge-photo-wrap {
+        width: 25mm !important;
+        height: 29mm !important;
+      }
+
+      .id-card-portrait .badge-name {
+        font-size: 13pt !important;
+      }
+
+      .id-card-portrait .badge-program {
+        font-size: 7.5pt !important;
+      }
+
+      .id-card-portrait .badge-table {
+        font-size: 7.5pt !important;
+      }
+
+      .id-brand {
+        -webkit-text-fill-color: #f472b6 !important;
+        color: #f472b6 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16V14L13 9V3.5A1.5 1.5 0 0 0 11.5 2A1.5 1.5 0 0 0 10 3.5V9L2 14V16L10 13.5V19L8 20.5V22L11.5 21L15 22V20.5L13 19V13.5L21 16Z"/></svg>
+      </div>
+      <div class="brand-meta">
+        <span class="brand-title">TransGlobe Academy</span>
+        <span class="brand-sub">School of Logistics & Aviation</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div id="auth-view" class="glass">
+      <h1 class="auth-title">Student Portal</h1>
+      <p class="auth-subtitle">Verify registration details to access your portal</p>
+
+      <div id="login-alert" class="alert alert-danger">
+        Invalid Register Number or Date of Birth.
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="reg-input">Student Register No</label>
+          <input type="text" id="reg-input" class="font-mono" placeholder="e.g. 91902260325001" required autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="dob-input">Date of Birth</label>
+          <input type="date" id="dob-input" class="font-mono" required />
+        </div>
+
+        <button type="submit" class="btn">Verify & Sign In</button>
+      </form>
+
+      <div class="demo-credentials">
+        <strong style="color: #e9d5ff;">Quick-Fill Credentials:</strong>
+        <span class="demo-chip" onclick="quickFill('91902260325001', '2005-02-26')">
+          ⚡ <strong>AMAL MOHAN</strong> | Reg: <strong>91902260325001</strong> | DOB: <strong>26-02-2005</strong>
+        </span>
+        <span class="demo-chip" onclick="quickFill('TG2024LSC089', '2001-08-14')">
+          Rahul Nair - TG2024LSC089 / 2001-08-14
+        </span>
+      </div>
+    </div>
+
+    <div id="dashboard-view">
+      <div class="dashboard-grid">
+        
+        <div class="glass profile-card">
+          <div class="avatar-wrapper">
+            <img id="profile-photo" class="avatar-img" src="" alt="Student Profile Photo" />
+          </div>
+          <div class="status-badge">
+            <span class="status-dot"></span> Active Student
+          </div>
+          <h2 id="profile-name" class="profile-name">--</h2>
+          <p id="profile-reg" class="profile-role font-mono">--</p>
+
+          <ul class="meta-list">
+            <li class="meta-item">
+              <span class="meta-label">Blood Group</span>
+              <span id="profile-blood" class="meta-value">--</span>
+            </li>
+            <li class="meta-item">
+              <span class="meta-label">Campus</span>
+              <span id="profile-campus" class="meta-value">--</span>
+            </li>
+            <li class="meta-item">
+              <span class="meta-label">Batch Session</span>
+              <span id="profile-batch" class="meta-value font-mono">--</span>
+            </li>
+          </ul>
+
+          <button class="btn btn-secondary" onclick="logout()" style="margin-top: 1.5rem;">
+            Sign Out
+          </button>
+        </div>
+
+        <div class="glass dashboard-panel">
+          
+          <div>
+            <div class="panel-header">
+              <h3 class="panel-title">Program Specifications</h3>
+            </div>
+            <div class="info-grid" style="margin-top: 1.25rem;">
+              <div class="info-box">
+                <div class="info-box-label">Program Course</div>
+                <div id="info-course" class="info-box-value">--</div>
+              </div>
+              <div class="info-box">
+                <div class="info-box-label">Academic Department</div>
+                <div id="info-dept" class="info-box-value">--</div>
+              </div>
+              <div class="info-box">
+                <div class="info-box-label">Mobile Contact</div>
+                <div id="info-contact" class="info-box-value font-mono">--</div>
+              </div>
+              <div class="info-box">
+                <div class="info-box-label">Institutional Email</div>
+                <div id="info-email" class="info-box-value font-mono">--</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel-header">
+              <h3 class="panel-title">TransGlobe Digital ID Card</h3>
+              
+              <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                <div class="id-tabs">
+                  <button class="id-tab-btn active" onclick="switchCardFormat('landscape', this)">Landscape</button>
+                  <button class="id-tab-btn" onclick="switchCardFormat('portrait', this)">Portrait</button>
+                </div>
+
+                <button class="btn" onclick="printID()" style="width: auto; padding: 0.55rem 1.15rem; font-size: 0.85rem;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px;">
+                    <path d="M18 7H6V3H18V7ZM19 8C19.55 8 20 8.45 20 9C20 9.55 19.55 10 19 10C18.45 10 18 9.55 18 9C18 8.45 18.45 8 19 8ZM16 19V15H8V19H16ZM18 13C19.66 13 21 11.66 21 10V8C21 6.34 19.66 5 18 5H6C4.34 5 3 6.34 3 8V10C3 11.66 4.34 13 6 13H7V17H5V21H19V17H17V13H18Z"/>
+                  </svg>
+                  Print / Save PDF
+                </button>
+              </div>
+            </div>
+
+            <div class="id-card-stage" style="margin-top: 1.25rem;">
+              
+              <div id="landscape-view" class="card-view active">
+                <div class="id-card-landscape">
+                  <div class="id-top">
+                    <span class="id-brand">TRANSGLOBE ACADEMY</span>
+                    <span id="land-campus" class="id-campus">KOCHI CAMPUS (KATHRIKADAVU)</span>
+                  </div>
+
+                  <div class="id-body">
+                    <img id="land-photo" class="id-photo" src="" alt="Student Card Photo" />
+                    <div class="id-info">
+                      <div id="land-name" class="id-name">--</div>
+                      <div id="land-course" class="id-course">--</div>
+                      <div class="id-grid-details font-mono">
+                        <div class="id-field">
+                          <span>REG NO</span>
+                          <strong id="land-reg">--</strong>
+                        </div>
+                        <div class="id-field">
+                          <span>CONTACT</span>
+                          <strong id="land-contact">--</strong>
+                        </div>
+                        <div class="id-field">
+                          <span>BLOOD</span>
+                          <strong id="land-blood">--</strong>
+                        </div>
+                        <div class="id-field">
+                          <span>BATCH</span>
+                          <strong id="land-batch">--</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="id-bottom">
+                    <div class="barcode-placeholder"></div>
+                    <div class="id-validity font-mono">
+                      <span>STATUS: <strong style="color: #4ade80;">ACTIVE</strong></span><br>
+                      <span>ACCREDITED TRAINING</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="portrait-view" class="card-view">
+                <div class="id-card-portrait">
+                  <div>
+                    <div class="lanyard-slot"></div>
+                    <div class="id-brand" style="font-size: 0.98rem; margin-bottom: 0.25rem;">TRANSGLOBE ACADEMY</div>
+                    <div id="port-campus" class="id-campus" style="margin-bottom: 0.95rem;">KOCHI CAMPUS (KATHRIKADAVU)</div>
+
+                    <div class="badge-photo-wrap">
+                      <img id="port-photo" src="" alt="Student Photo" />
+                    </div>
+
+                    <div id="port-name" class="badge-name">--</div>
+                    <div id="port-course" class="badge-program">--</div>
+
+                    <div class="badge-table font-mono">
+                      <div class="badge-field">
+                        <span>REG ID</span>
+                        <strong id="port-reg">--</strong>
+                      </div>
+                      <div class="badge-field">
+                        <span>CONTACT</span>
+                        <strong id="port-contact">--</strong>
+                      </div>
+                      <div class="badge-field">
+                        <span>BLOOD</span>
+                        <strong id="port-blood">--</strong>
+                      </div>
+                      <div class="badge-field">
+                        <span>BATCH</span>
+                        <strong id="port-batch">--</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="barcode-placeholder" style="width: 100%; margin: 0 auto 0.75rem;"></div>
+                    <div class="id-validity font-mono" style="text-align: center; font-size: 0.72rem;">
+                      <span>STATUS: <strong style="color: #4ade80;">ACTIVE</strong> | VALID ACCREDITED</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const STUDENTS = [
+      {
+        regNo: "91902260325001",
+        dob: "2005-02-26",
+        name: "AMAL MOHAN",
+        course: "Post Graduate Diploma in Logistics & Supply Chain Management",
+        department: "School of Logistics & Supply Chain",
+        campus: "Kochi Campus (Kathrikadavu)",
+        batch: "2025- 2026",
+        contact: "+91 8891128643",
+        email: "info@transglobeacademy.com",
+        bloodGroup: "O+",
+        photoUrl: "https://cdn.corenexis.com/f/mBYBo9FPKOt.png"
+      },
+      {
+        regNo: "TG2024LSC089",
+        dob: "2001-08-14",
+        name: "Rahul Nair",
+        course: "Post Graduate Diploma in Logistics & SCM",
+        department: "School of Logistics & SCM",
+        campus: "Kochi Campus (Kathrikadavu)",
+        batch: "2024 - 2025",
+        contact: "+91 98471 23450",
+        email: "rahul.nair@transglobe.edu.in",
+        bloodGroup: "O+",
+        photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80"
+      }
+    ];
+
+    const STORAGE_KEY = "transglobe_final_session";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initSession();
+      document.getElementById("login-form").addEventListener("submit", handleLogin);
+    });
+
+    function initSession() {
+      const savedReg = localStorage.getItem(STORAGE_KEY);
+      if (savedReg) {
+        const student = STUDENTS.find(s => s.regNo.toLowerCase() === savedReg.toLowerCase());
+        if (student) {
+          renderDashboard(student);
+          return;
+        }
+      }
+      renderLogin();
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const regInput = document.getElementById("reg-input").value.trim();
+      const dobInput = document.getElementById("dob-input").value;
+      const alertBox = document.getElementById("login-alert");
+
+      const student = STUDENTS.find(
+        s => s.regNo.toLowerCase() === regInput.toLowerCase() && s.dob === dobInput
+      );
+
+      if (student) {
+        alertBox.style.display = "none";
+        localStorage.setItem(STORAGE_KEY, student.regNo);
+        renderDashboard(student);
+      } else {
+        alertBox.style.display = "block";
+      }
+    }
+
+    function renderDashboard(student) {
+      document.getElementById("auth-view").style.display = "none";
+      document.getElementById("dashboard-view").style.display = "block";
+
+      // Profile details
+      document.getElementById("profile-photo").src = student.photoUrl;
+      document.getElementById("profile-name").textContent = student.name;
+      document.getElementById("profile-reg").textContent = student.regNo;
+      document.getElementById("profile-blood").textContent = student.bloodGroup;
+      document.getElementById("profile-campus").textContent = student.campus;
+      document.getElementById("profile-batch").textContent = student.batch;
+
+      // Program Specifications
+      document.getElementById("info-course").textContent = student.course;
+      document.getElementById("info-dept").textContent = student.department;
+      document.getElementById("info-contact").textContent = student.contact;
+      document.getElementById("info-email").textContent = student.email;
+
+      // 1. Landscape Card Bindings
+      document.getElementById("land-photo").src = student.photoUrl;
+      document.getElementById("land-name").textContent = student.name;
+      document.getElementById("land-course").textContent = student.course;
+      document.getElementById("land-reg").textContent = student.regNo;
+      document.getElementById("land-contact").textContent = student.contact;
+      document.getElementById("land-blood").textContent = student.bloodGroup;
+      document.getElementById("land-batch").textContent = student.batch;
+      document.getElementById("land-campus").textContent = student.campus.toUpperCase();
+
+      // 2. Portrait Card Bindings
+      document.getElementById("port-photo").src = student.photoUrl;
+      document.getElementById("port-name").textContent = student.name;
+      document.getElementById("port-course").textContent = student.course;
+      document.getElementById("port-reg").textContent = student.regNo;
+      document.getElementById("port-contact").textContent = student.contact;
+      document.getElementById("port-blood").textContent = student.bloodGroup;
+      document.getElementById("port-batch").textContent = student.batch;
+      document.getElementById("port-campus").textContent = student.campus.toUpperCase();
+    }
+
+    function switchCardFormat(format, btn) {
+      document.querySelectorAll('.id-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.card-view').forEach(v => v.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(format + '-view').classList.add('active');
+    }
+
+    function renderLogin() {
+      document.getElementById("auth-view").style.display = "block";
+      document.getElementById("dashboard-view").style.display = "none";
+      document.getElementById("login-form").reset();
+      document.getElementById("login-alert").style.display = "none";
+    }
+
+    function logout() {
+      localStorage.removeItem(STORAGE_KEY);
+      renderLogin();
+    }
+
+    function quickFill(reg, dob) {
+      document.getElementById("reg-input").value = reg;
+      document.getElementById("dob-input").value = dob;
+    }
+
+    function printID() {
+      window.print();
+    }
+  </script>
+</body>
+</html>
